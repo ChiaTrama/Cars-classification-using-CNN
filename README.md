@@ -1,4 +1,4 @@
-### Efficient Fine-Grained Vehicle Recognition under Class Imbalance  
+## Efficient Fine-Grained Vehicle Recognition under Class Imbalance  
 Fine-grained vehicle **classification** and **verification** on the [CompCars dataset](http://mmlab.ie.cuhk.edu.hk/datasets/comp_cars/) using Convolutional Neural Networks (PyTorch).  
 Developed for the *Neural Networks and Deep Learning* course — MSc Physics of Data, University of Padova (A.Y. 2024–2025).
 
