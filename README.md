@@ -15,7 +15,7 @@ This project analyzes how different CNN architectures perform under **severe cla
 We evaluate both **classification** (make/model prediction) and **verification** (Siamese similarity) tasks using **Cross-Entropy**, **Focal Loss**, and **Contrastive Loss**.
 
 Several pretrained and custom models are compared, including **InceptionV3**, **ResNet18**, **EfficientNet-B0**, and custom **SimpleResNet** variants trained from scratch.  
-Each configuration is evaluated in terms of **Balanced Accuracy**, **F1-score**, and **training efficiency**.
+Each configuration is evaluated through multiple metrics, including Accuracy, Balanced Accuracy, F1-score, Top-5 accuracy, and training efficiency.
 
 Results show that lightweight pretrained models such as *ResNet18* provide the best trade-off between accuracy and efficiency, while *InceptionV3* achieves the highest balanced accuracy overall.  
 For verification, a *Siamese ResNet18* backbone learns robust embeddings and maintains strong **ROC–AUC** across all difficulty levels.
@@ -26,7 +26,7 @@ The codebase is fully modular, using **PyTorch**, **Albumentations**, and **Tens
 
 ### Dataset  
 All experiments are based on the **CompCars** dataset (Yang et al., CVPR 2015),  
-using the official train/test splits for classification and the `verification_pairs_*` lists for the verification task.
+using the official train/test splits for classification and the verification pairs lists for the verification task.
 
 ---
 
@@ -64,9 +64,4 @@ using the official train/test splits for classification and the `verification_pa
 
 ---
 
-### Quick Start  
-```bash
-pip install -r requirements.txt
-python main.py
-# Select: task, target, loss, strategy, epochs, batch size
-# Outputs saved under: runs/<strategy>/
+
