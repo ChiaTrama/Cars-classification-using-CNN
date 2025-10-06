@@ -43,20 +43,20 @@ using the official train/test splits for classification and the verification pai
     - builds global *make/model → class id* mapping from `train.txt`/`test.txt`;  
     - optional **use_bbox** cropping;  
     - **Albumentations** augmentations and normalization (ImageNet or dataset-specific mean/std);  
-    - **CachedDataset** for full in-memory caching. :contentReference[oaicite:0]{index=0}  
+    - **CachedDataset** for full in-memory caching. :contentReference   
   - **dataset_verification.py** — Siamese dataset logic for verification:  
     - `CompCarsVerificationDataset` reads pre-built pairs (`easy`, `medium`, `hard`);  
-    - `CompCarsBaseDataset` + `SiameseDataset` dynamically generate positive/negative pairs. :contentReference[oaicite:1]{index=1}  
+    - `CompCarsBaseDataset` + `SiameseDataset` dynamically generate positive/negative pairs. :contentReference   
   - **model.py** — CNN architectures:  
     - **SimpleResNet** / **SimpleResNetLarge** (trained from scratch);  
     - **ResNet18** and **InceptionV3** (fine-tuning, auxiliary head for Inception);  
-    - **SiameseResNet18**, **SiameseResNet50_30M**, and **SiameseEfficientNet-B0** with BN-neck and L2-normalized embeddings. :contentReference[oaicite:2]{index=2}  
+    - **SiameseResNet18**, **SiameseResNet50_30M**, and **SiameseEfficientNet-B0** with BN-neck and L2-normalized embeddings. :contentReference   
   - **strategies.py** — predefined model/training strategies:  
     - specifies input size, augmentations, and pretrained weights;  
     - examples: `InceptionV3_299x299`, `ResNet18_FineTuning_224x224`, `SimpleResNet*`, `SiameseResNet18_192x192`, etc.;  
-    - includes `serialize_strategy(...)` for structured logging. :contentReference[oaicite:3]{index=3}  
-  - **train.py** — internal modular training functions imported by `main.py`; implements the same metric logic and checkpoint saving for classification and verification. :contentReference[oaicite:4]{index=4}  
-  - **lightning_train.py** — legacy **PyTorch Lightning** version of the training loop (kept for compatibility). :contentReference[oaicite:5]{index=5}  
+    - includes `serialize_strategy(...)` for structured logging. :contentReference   
+  - **train.py** — internal modular training functions imported by `main.py`; implements the same metric logic and checkpoint saving for classification and verification. :contentReference   
+  - **lightning_train.py** — legacy **PyTorch Lightning** version of the training loop (kept for compatibility). :contentReference   
 
 - **runs/** — automatically created output directory containing:
   - checkpoints, TensorBoard logs, profiler traces, and `.pkl` metric summaries.  
