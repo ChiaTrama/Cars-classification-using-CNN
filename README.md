@@ -30,22 +30,22 @@ using the official train/test splits for classification and the verification pai
 
 ---
 
-### Repository Structure  
-- **main.py** — main interactive script: selects task (classification / verification), target (make / model), loss, and strategy.  
-  Loads datasets and models, runs training, and saves `.pkl` summaries, checkpoints, and logs.  
+### Repository Structure
+- **main.py** — interactive CLI: choose task (classification / verification), target (make / model), loss, and strategy; builds datasets/models, runs training, and saves metric summaries (`.pkl`), checkpoints, and logs. 
 
 - **src/**
-  - `dataset.py` — classification dataset loader (CompCars), with Albumentations augmentations, normalization (ImageNet or dataset mean), and optional caching.  
-  - `dataset_verification.py` — Siamese verification datasets; handles predefined pair lists (easy / medium / hard) or dynamic pair generation.  
-  - `model.py` — CNN and Siamese architectures: *SimpleResNet*, *ResNet18*, *InceptionV3*, *EfficientNet-B0*, etc.  
-  - `strategies.py` — predefined model/training setups (input size, augmentations, pretrained weights); used to standardize experiments.  
-  - `train.py` — core PyTorch training loop for both tasks:  
-    - *Classification*: Cross-Entropy / Focal Loss, OneCycleLR, metrics (**Acc**, **BalAcc**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
-    - *Verification*: Contrastive Loss, optimal threshold search, metrics (**ROC–AUC**, **F1**, **Precision**, **Recall**).  
-  - `lightning_train.py` — legacy implementation using PyTorch Lightning (kept for compatibility).  
+  - `dataset.py` — CompCars classification dataset: global make/model→id mapping from the official splits; optional bbox cropping; Albumentations augmentations; ImageNet or dataset mean/std normalization; optional in-RAM caching via `CachedDataset`. 
+  - `dataset_verification.py` — verification datasets for Siamese training/validation: reads **predefined pair lists** (`easy`, `medium`, `hard`) for val, and uses `CompCarsBaseDataset` + `SiameseDataset` to build **on-the-fly positive/negative pairs** for training. 
+  - `model.py` — CNN and Siamese architectures: SimpleResNet / SimpleResNetLarge (from scratch); ResNet18 & InceptionV3 for fine-tuning (with aux head for Inception); Siamese backbones (ResNet18, ResNet50_30M, EfficientNet-B0) with BN-neck and L2-normalized embeddings. 
+  - `strategies.py` — predefined training “strategies” (input size, augmentations, bbox usage, normalization choice, model factory) for both classification and verification; includes `serialize_strategy(...)` for saving metadata.
+  - `train.py` — **core PyTorch training loop** used by `main.py`.  
+    - *Classification:* Cross-Entropy / Focal Loss, OneCycleLR, metrics (**Accuracy**, **Balanced Accuracy**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
+    - *Verification:* Contrastive loss, automatic threshold search, metrics (**ROC-AUC**, **F1**, **Precision**, **Recall**). 
+  - `lightning_train.py` — legacy PyTorch Lightning training module kept for compatibility.
 
-- **runs/** — automatically created output folder containing checkpoints, TensorBoard logs, profiler traces, and `.pkl` summaries.  
-- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) with results and analysis.
+- **runs/** — auto-generated outputs per strategy: checkpoints, TensorBoard logs, profiler traces, and `.pkl` summaries. (Created by `main.py`.) 
+- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) with results and analysis. 
+
 
 ---
 
