@@ -31,36 +31,23 @@ using the official train/test splits for classification and the verification pai
 ---
 
 ### Repository Structure  
-- **main.py** — interactive CLI entry point: select *task* (classification/verification), *target* (make/model), *loss*, and *strategy*.  
-  Loads dataset/model, runs training, and saves metric summaries (`.pkl`) under the strategy folder.  
-  Supports dataset caching and checkpoint management.    
-- **train.py** (root) — pure PyTorch training loop for both tasks:  
-  - *Classification*: Cross-Entropy / Focal Loss, OneCycleLR scheduler, metrics (**Accuracy**, **Balanced Accuracy**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
-  - *Verification*: Contrastive Loss, automatic threshold optimization, metrics (**ROC–AUC**, **F1**, **Precision**, **Recall**).    
+- **main.py** — main interactive script: selects task (classification / verification), target (make / model), loss, and strategy.  
+  Loads datasets and models, runs training, and saves `.pkl` summaries, checkpoints, and logs.  
+
+- **train.py** — core PyTorch training loop for both tasks:  
+  - *Classification*: Cross-Entropy / Focal Loss, OneCycleLR, metrics (**Acc**, **BalAcc**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
+  - *Verification*: Contrastive Loss, optimal threshold search, metrics (**ROC–AUC**, **F1**, **Precision**, **Recall**).  
 
 - **src/**
-  - **dataset.py** — CompCars dataset loader for classification:  
-    - builds global *make/model → class id* mapping from `train.txt`/`test.txt`;  
-    - optional **use_bbox** cropping;  
-    - **Albumentations** augmentations and normalization (ImageNet or dataset-specific mean/std);  
-    - **CachedDataset** for full in-memory caching. :contentReference   
-  - **dataset_verification.py** — Siamese dataset logic for verification:  
-    - `CompCarsVerificationDataset` reads pre-built pairs (`easy`, `medium`, `hard`);  
-    - `CompCarsBaseDataset` + `SiameseDataset` dynamically generate positive/negative pairs. :contentReference   
-  - **model.py** — CNN architectures:  
-    - **SimpleResNet** / **SimpleResNetLarge** (trained from scratch);  
-    - **ResNet18** and **InceptionV3** (fine-tuning, auxiliary head for Inception);  
-    - **SiameseResNet18**, **SiameseResNet50_30M**, and **SiameseEfficientNet-B0** with BN-neck and L2-normalized embeddings. :contentReference   
-  - **strategies.py** — predefined model/training strategies:  
-    - specifies input size, augmentations, and pretrained weights;  
-    - examples: `InceptionV3_299x299`, `ResNet18_FineTuning_224x224`, `SimpleResNet*`, `SiameseResNet18_192x192`, etc.;  
-    - includes `serialize_strategy(...)` for structured logging. :contentReference   
-  - **train.py** — internal modular training functions imported by `main.py`; implements the same metric logic and checkpoint saving for classification and verification. :contentReference   
-  - **lightning_train.py** — legacy **PyTorch Lightning** version of the training loop (kept for compatibility). :contentReference   
+  - `dataset.py` — classification dataset loader (CompCars), with Albumentations augmentations, normalization (ImageNet or dataset mean), and optional caching.  
+  - `dataset_verification.py` — Siamese verification datasets; handles predefined pair lists (easy / medium / hard) or dynamic pair generation.  
+  - `model.py` — CNN and Siamese architectures: *SimpleResNet*, *ResNet18*, *InceptionV3*, *EfficientNet-B0*, etc.  
+  - `strategies.py` — predefined model/training setups (input size, augmentations, pretrained weights); used to standardize experiments.  
+  - `train.py` — modular version of the training loop imported by `main.py`.  
+  - `lightning_train.py` — legacy implementation using PyTorch Lightning (kept for compatibility).  
 
-- **runs/** — automatically created output directory containing:
-  - checkpoints, TensorBoard logs, profiler traces, and `.pkl` metric summaries.  
-- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) describing the full experimental study.  
+- **runs/** — automatically created output folder containing checkpoints, TensorBoard logs, profiler traces, and `.pkl` summaries.  
+- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) with results and analysis.  
 
 ---
 
