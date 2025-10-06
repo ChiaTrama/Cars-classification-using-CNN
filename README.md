@@ -34,20 +34,18 @@ using the official train/test splits for classification and the verification pai
 - **main.py** — main interactive script: selects task (classification / verification), target (make / model), loss, and strategy.  
   Loads datasets and models, runs training, and saves `.pkl` summaries, checkpoints, and logs.  
 
-- **train.py** — core PyTorch training loop for both tasks:  
-  - *Classification*: Cross-Entropy / Focal Loss, OneCycleLR, metrics (**Acc**, **BalAcc**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
-  - *Verification*: Contrastive Loss, optimal threshold search, metrics (**ROC–AUC**, **F1**, **Precision**, **Recall**).  
-
 - **src/**
   - `dataset.py` — classification dataset loader (CompCars), with Albumentations augmentations, normalization (ImageNet or dataset mean), and optional caching.  
   - `dataset_verification.py` — Siamese verification datasets; handles predefined pair lists (easy / medium / hard) or dynamic pair generation.  
   - `model.py` — CNN and Siamese architectures: *SimpleResNet*, *ResNet18*, *InceptionV3*, *EfficientNet-B0*, etc.  
   - `strategies.py` — predefined model/training setups (input size, augmentations, pretrained weights); used to standardize experiments.  
-  - `train.py` — modular version of the training loop imported by `main.py`.  
+  - `train.py` — core PyTorch training loop for both tasks:  
+    - *Classification*: Cross-Entropy / Focal Loss, OneCycleLR, metrics (**Acc**, **BalAcc**, **Top-5**, **F1**), early stopping, TensorBoard logging.  
+    - *Verification*: Contrastive Loss, optimal threshold search, metrics (**ROC–AUC**, **F1**, **Precision**, **Recall**).  
   - `lightning_train.py` — legacy implementation using PyTorch Lightning (kept for compatibility).  
 
 - **runs/** — automatically created output folder containing checkpoints, TensorBoard logs, profiler traces, and `.pkl` summaries.  
-- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) with results and analysis.  
+- **NNDL_project_ChiaraTramarin_AlessioTuscano.pdf** — final report (paper) with results and analysis.
 
 ---
 
